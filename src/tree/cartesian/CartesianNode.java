@@ -26,6 +26,9 @@ public class CartesianNode<T extends Comparable<T> > extends ComparableNode<T> {
 		super(given);	
 	}
 	
+	public CartesianNode<T> parent() {
+		return (CartesianNode<T>)super.parent();
+	}
 	public CartesianNode<T> left() {
 		return (CartesianNode<T>)super.left();
 	}
@@ -34,13 +37,13 @@ public class CartesianNode<T extends Comparable<T> > extends ComparableNode<T> {
 	}
 	// setLeft() and setRight() ensure that node.value is always the lowest value in the subtree
 	public void setLeft( Node<T> node, boolean override ) {
-		assert node instanceof CartesianNode;
-		assert node.value.compareTo(value) >=0;
+		assert node==null || node instanceof CartesianNode;
+		assert node==null || node.value.compareTo(value) >=0;
 		super.setLeft(node, override);
 	}
 	public void setRight( Node<T> node, boolean override ) {
-		assert node instanceof CartesianNode;
-		assert node.value.compareTo(value) >=0;
+		assert node==null || node instanceof CartesianNode;
+		assert node==null || node.value.compareTo(value) >=0;
 		super.setRight( node, override );
 	}
 }

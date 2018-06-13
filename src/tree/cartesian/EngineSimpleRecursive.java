@@ -17,9 +17,7 @@
  */
 package tree.cartesian;
 
-/**
- *
- * @author pkehl
+/** O(N^2)
  */
 public class EngineSimpleRecursive extends Engine {
 	/** Push the given node to the right branch under the tree with the given existing root.
