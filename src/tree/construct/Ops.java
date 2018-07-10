@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import tree.Node;
 
 public class Ops {
-	static int maxLength( List<StringBuilder> lines ) {
+	static int maxLength( List<StringBuilder> lines ) {//@TODO Collectors
 		int max= 0;
 		for( StringBuilder line: lines ) {
 			max= Math.max( max, line.length() );
@@ -33,7 +33,7 @@ public class Ops {
 	static String format( final Node<?> node ) {
 		List<StringBuilder> lines= formatLines( node );
 		StringBuilder result= new StringBuilder();
-		for( StringBuilder line: lines ) {
+		for( StringBuilder line: lines ) {//@TODO Use Collectors
 			if( result.length()>0 ) {
 				result.append( "\n" );
 			}
@@ -49,7 +49,7 @@ public class Ops {
 		final StringBuilder firstLine, secondLine;
 		if( node.left()!=null ) {
 			lines= formatLines( node.left() );
-			final int leftLength= maxLength(lines); // Not efficient, but that doesn't matter
+			final int leftLength= maxLength(lines); // Not efficient, but that doesn't matter. Otherwise formatLines() could return a compound {List<StringBuilder>, int maxLength}
 			secondLine= lines.get(0);
 			// print '~' filler character(s) right of the left node.
 			// Following assumes that lines have no trailing spaces.
@@ -65,7 +65,9 @@ public class Ops {
 			firstLine= new StringBuilder();
 			secondLine= new StringBuilder();
 			lines.add( firstLine );
-			lines.add( secondLine );
+			if( node.right()!=null ) {
+				lines.add( secondLine );
+			}
 		}
 		firstLine.append( node.value );
 		
@@ -88,20 +90,18 @@ public class Ops {
 			}
 			
 			final int leftLength= Math.max( firstLine.length(), secondLine.length() );
-			int mergedLength= 0;
 			for( int i=1; i<lines.size(); i++ ) { // skip line #0, which is the root
 				StringBuilder line= lines.get(i);
-				line.append( " ".repeat( leftLength-line.length() ) );
-				if( i<=rightLines.size() ) {
+				if( i-1<rightLines.size() ) {
+					// Add trailing spaces to the output of the left subtree, so that the right subtree is shifted evenly
+					line.append( " ".repeat( leftLength-line.length() ) );
 					line.append( rightLines.get(i-1) );
-					mergedLength= Math.max( mergedLength, line.length() );
-				} // otherwise do nothing, as we don't need to add trailing spaces
+				}
 			}
-			for( int i=lines.size(); i<rightLines.size(); i++ ) {
+			for( int i=lines.size()-1; i<rightLines.size(); i++ ) {
 				StringBuilder line= new StringBuilder( " ".repeat(leftLength) );
 				line.append( rightLines.get(i) );
 				lines.add( line );
-				mergedLength= Math.max( mergedLength, line.length() );
 			}
 		}
 		return lines;
