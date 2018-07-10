@@ -26,18 +26,34 @@ public class Ops {
 	public static <T extends Comparable<T>> String print( CartesianNode<T> node ) {
 		SortedMap<T, String> valuesToLines= new TreeMap<T, String>();
 		print( null, node, valuesToLines, -1, 0 );
-		Consumer<String> consumer= new Consumer<String>() {
-			private String result= "";
-			public void accept( String s ) {
-				if( !result.isEmpty() ) {
-					result+= "\n";
+		
+		Consumer<String> consumer;
+		Object result;
+		if( false ) {
+			consumer= new Consumer<String>() {
+				private String result= "";
+				public void accept( String s ) {
+					if( !result.isEmpty() ) {
+						result+= "\n";
+					}
+					result+= s;
 				}
-				result+= s;
-			}
-			public String toString() { return result; }
-		};
+				public String toString() { return result; }
+			};
+			result= consumer;
+		}
+		else {
+			var builder= new StringBuilder();
+			consumer= (s) -> {
+				if( builder.length()>0 ) {
+					builder.append("\n");
+				}
+				builder.append( s );
+			};
+			result= builder;
+		}
 		valuesToLines.values().forEach( consumer );
-		return ""+consumer;
+		return ""+result;
 	}
 	/** Use dot '~' instead of dash '-', to support printing negative numbers.
 	 *  @param int indent Number of spaces to print left of the next node to print.
