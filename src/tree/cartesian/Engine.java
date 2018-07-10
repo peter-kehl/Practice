@@ -20,21 +20,26 @@ package tree.cartesian;
 public abstract class Engine {
 	protected abstract <T extends Comparable<T>> CartesianNode<T> build( T... values );
 	
-	protected static Integer[] parseArgs( String... numberStrings ) {
-		Integer nums[]= new Integer[numberStrings.length];
+	protected static Integer[] parseArgs( String... numbersAsStrings ) {
+		Integer nums[]= new Integer[numbersAsStrings.length];
 		int i=0;
-		for( String numberString: numberStrings ) {
+		for( String numberString: numbersAsStrings ) {
 			Integer num= Integer.parseInt(numberString);
 			nums[i++]= num;
 		}
 		return nums;
 	}
 	
-	/** Invoke from static main(String...). */
-	protected void run( String... numberStrings ) {
-		Integer nums[]= parseArgs(numberStrings);
+	public String buildAndFormat( String... numbersAsStrings ) {
+		assert numbersAsStrings.length>0: "Pass at least one value.";
+		Integer nums[]= parseArgs(numbersAsStrings);
 		CartesianNode<Integer> root= build(nums);
-		System.out.println(Ops.format( root ) );
+		return Ops.format( root );
+	}
+	
+	/** Invoke from static main(String...). */
+	protected void run( String... numbersAsStrings ) {
+		System.out.println( buildAndFormat(numbersAsStrings) );
 	}
 	
 }

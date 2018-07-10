@@ -22,6 +22,9 @@ package tree.cartesian;
 public class EngineKeepLastInserted extends Engine {
 	
 	protected <T extends Comparable<T>> CartesianNode<T> build( T... values ) {
+		if( values.length==0 ) {
+			return null;
+		}
 		CartesianNode<T> lastInserted= null;
 		valuesLoop: for( final T value: values ) {
 			final CartesianNode<T> created= new CartesianNode<T>(value);

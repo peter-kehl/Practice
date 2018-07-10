@@ -17,6 +17,7 @@
  */
 package tree.cartesian;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 
 import org.junit.After;
@@ -35,35 +36,38 @@ public class FullTest {
 	public FullTest() {
 	}
 	
-	@BeforeClass
-	public static void setUpClass() {
-	}
-	
-	@AfterClass
-	public static void tearDownClass() {
-	}
-	
-	@Before
-	public void setUp() {
-	}
-	
-	@After
-	public void tearDown() {
-	}
+	String numbersAsStrings[]= {"4", "2", "7", "3", "1", "5", "0", "8", "-1", "6", "9", "-2"};
 	
 	@Test
 	public void parseArgs() {
-		String args[]= {"4", "2", "7", "3", "1", "5", "0", "8", "-1", "6", "9", "-2"};
-		Integer nums[]= Engine.parseArgs(args);
+		Integer nums[]= Engine.parseArgs(numbersAsStrings);
 		assertArrayEquals("Not parsed well.", nums, new Integer[]{
 			4, 2, 7, 3, 1, 5, 0, 8, -1, 6, 9, -2
 		} );
 	}
 	
-	//private 
+	String expectedOutput=
+"                       -2\n" +
+"                -1~~~~~^\n" +
+"            0~~~^\n" +
+"        1~~~^\n" +
+"  2~~~~~^\n" +
+"  ^~~~3\n" +
+"4~^\n" +
+"        ^~5\n" +
+"                ^~~6\n" +
+"    7~^\n" +
+"            ^~8\n" +
+"                   ^~9";
+	
+	private void assertEngineBuildsAndFormats( Engine engine ) {
+		String formatted= engine.buildAndFormat(numbersAsStrings);
+		assertEquals( formatted, expectedOutput );
+	}
 	
 	@Test
 	public void all() {
-		
+		assertEngineBuildsAndFormats( new EngineSimpleRecursive() );
+		assertEngineBuildsAndFormats( new EngineKeepLastInserted() );
 	}
 }
