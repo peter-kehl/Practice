@@ -86,6 +86,6 @@ public class Engine {
 		assert new HashSet<String>( inOrder ).size() ==inOrder.size() : "Entries (within each sequence) must be unique.";
 		
 		Node<String> tree= build( inOrder, preOrder );
-		System.out.println( Ops.print( tree ) );
+		System.out.println( Ops.format( tree ) );
 	}
 }

@@ -20,18 +20,21 @@ package tree.cartesian;
 public abstract class Engine {
 	protected abstract <T extends Comparable<T>> CartesianNode<T> build( T... values );
 	
-	/** Invoke from static main(String...). */
-	protected void run( String... numberStrings ) {
+	protected static Integer[] parseArgs( String... numberStrings ) {
 		Integer nums[]= new Integer[numberStrings.length];
 		int i=0;
 		for( String numberString: numberStrings ) {
 			Integer num= Integer.parseInt(numberString);
 			nums[i++]= num;
-			System.out.print( ""+num+ " ");
 		}
+		return nums;
+	}
+	
+	/** Invoke from static main(String...). */
+	protected void run( String... numberStrings ) {
+		Integer nums[]= parseArgs(numberStrings);
 		CartesianNode<Integer> root= build(nums);
-		System.out.println();
-		System.out.println(Ops.print( root ) );
+		System.out.println(Ops.format( root ) );
 	}
 	
 }

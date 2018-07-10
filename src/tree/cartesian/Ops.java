@@ -23,13 +23,13 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class Ops {
-	public static <T extends Comparable<T>> String print( CartesianNode<T> node ) {
+	public static <T extends Comparable<T>> String format( CartesianNode<T> node ) {
 		SortedMap<T, String> valuesToLines= new TreeMap<T, String>();
-		print( null, node, valuesToLines, -1, 0 );
+		format( null, node, valuesToLines, -1, 0 );
 		
 		Consumer<String> consumer;
 		Object result;
-		if( false ) {
+		if( false ) {// non-lambda alternative
 			consumer= new Consumer<String>() {
 				private String result= "";
 				public void accept( String s ) {
@@ -59,10 +59,10 @@ public class Ops {
 	 *  @param int indent Number of spaces to print left of the next node to print.
 	 *  @return new indent
 	 */
-	static <T extends Comparable<T>> int print( CartesianNode<T> parent, CartesianNode<T> node, SortedMap<T, String> valuesToLines, final int parentIndent, final int originalIndent ) {
+	static <T extends Comparable<T>> int format( CartesianNode<T> parent, CartesianNode<T> node, SortedMap<T, String> valuesToLines, final int parentIndent, final int originalIndent ) {
 		final int nodeIndent;
 		if( node.left()!=null ) {
-			nodeIndent= print( node, node.left(), valuesToLines, -1, originalIndent );
+			nodeIndent= format( node, node.left(), valuesToLines, -1, originalIndent );
 		}
 		else {
 			nodeIndent= originalIndent;
@@ -90,7 +90,7 @@ public class Ops {
 		final int afterCartesianNodeIndent= nodeIndentAndValue.length()+1;
 		final int afterRightIndent;
 		if( node.right()!=null ) {
-			afterRightIndent= print( node, node.right(), valuesToLines, nodeIndent, afterCartesianNodeIndent );
+			afterRightIndent= format( node, node.right(), valuesToLines, nodeIndent, afterCartesianNodeIndent );
 		}
 		else {
 			afterRightIndent= afterCartesianNodeIndent;

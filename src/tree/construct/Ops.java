@@ -30,8 +30,8 @@ public class Ops {
 		return max;
 	}
 	
-	static String print( final Node<?> node ) {
-		List<StringBuilder> lines= printLines( node );
+	static String format( final Node<?> node ) {
+		List<StringBuilder> lines= formatLines( node );
 		StringBuilder result= new StringBuilder();
 		for( StringBuilder line: lines ) {
 			if( result.length()>0 ) {
@@ -44,11 +44,11 @@ public class Ops {
 	
 	/** Not the most space-efficient, but simple.
 	 * @return Line parts, shifted in both dimensions. */
-	static <T> List<StringBuilder> printLines( final Node<T> node/*, final int initialMaxLineLength*/ ) {
+	static <T> List<StringBuilder> formatLines( final Node<T> node/*, final int initialMaxLineLength*/ ) {
 		final List<StringBuilder> lines;
 		final StringBuilder firstLine, secondLine;
 		if( node.left()!=null ) {
-			lines= printLines( node.left() );
+			lines= formatLines( node.left() );
 			final int leftLength= maxLength(lines); // Not efficient, but that doesn't matter
 			secondLine= lines.get(0);
 			// print '~' filler character(s) right of the left node.
@@ -73,7 +73,7 @@ public class Ops {
 			if( node.left()==null ) {
 				secondLine.append('^');
 			}
-			List<StringBuilder> rightLines= printLines( node.right() );
+			List<StringBuilder> rightLines= formatLines( node.right() );
 			final StringBuilder rightFirstLine= rightLines.get(0);
 			if( rightFirstLine.charAt(0)!=' ' ) {
 				secondLine.append('~');
