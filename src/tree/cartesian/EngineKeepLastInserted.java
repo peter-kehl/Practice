@@ -37,7 +37,7 @@ public class EngineKeepLastInserted extends Engine {
 						break;
 					}
 					if( parent.parent()==null ) {
-						created.setLeft( parent ); // This would make for() loop iterate again
+						created.setLeft( parent ); // This would make for() loop iterate again. That's why the following break.
 						break;
 					}
 				}
