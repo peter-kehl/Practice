@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package tree.cartesian;
+import java.util.List;
 
 /** O(N^2)
  */
@@ -47,7 +48,7 @@ public class EngineSimpleRecursive extends Engine {
 		}
 	}
 	
-	protected <T extends Comparable<T>> CartesianNode<T> build( T... values ) {
+	protected <T extends Comparable<T>> CartesianNode<T> build( List<T> values ) {
 		CartesianNode<T> root= null;
 		for( T value: values ) {
 			CartesianNode<T> node= new CartesianNode<T>(value);

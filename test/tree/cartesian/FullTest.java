@@ -16,8 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package tree.cartesian;
-import static org.junit.Assert.assertArrayEquals;
+//import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+
+import java.util.List;
 import java.util.Arrays;
 
 import org.junit.After;
@@ -40,10 +42,10 @@ public class FullTest {
 	
 	@Test
 	public void parseArgs() {
-		Integer nums[]= Engine.parseArgs(numbersAsStrings);
-		assertArrayEquals("Not parsed well.", nums, new Integer[]{
+		List<Integer> nums= Engine.parseArgs(numbersAsStrings);
+		assertEquals("Not parsed well.", nums, Arrays.asList( new Integer[]{
 			4, 2, 7, 3, 1, 5, 0, 8, -1, 6, 9, -2
-		} );
+		} ) );
 	}
 	
 	String expectedOutput=

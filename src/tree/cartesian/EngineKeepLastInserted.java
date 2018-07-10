@@ -16,13 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package tree.cartesian;
+import java.util.List;
 
 /** O(N) as per http://wcipeg.com/wiki/Cartesian_tree
  */
 public class EngineKeepLastInserted extends Engine {
 	
-	protected <T extends Comparable<T>> CartesianNode<T> build( T... values ) {
-		if( values.length==0 ) {
+	protected <T extends Comparable<T>> CartesianNode<T> build( List<T> values ) {
+		if( values.isEmpty() ) {
 			return null;
 		}
 		CartesianNode<T> lastInserted= null;

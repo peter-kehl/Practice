@@ -17,22 +17,27 @@
  */
 package tree.cartesian;
 
+import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
+
 public abstract class Engine {
-	protected abstract <T extends Comparable<T>> CartesianNode<T> build( T... values );
+	protected abstract <T extends Comparable<T>> CartesianNode<T> build( List<T> values );
 	
-	protected static Integer[] parseArgs( String... numbersAsStrings ) {
+	protected static List<Integer> parseArgs( String... numbersAsStrings ) {
 		Integer nums[]= new Integer[numbersAsStrings.length];
 		int i=0;
 		for( String numberString: numbersAsStrings ) {
 			Integer num= Integer.parseInt(numberString);
 			nums[i++]= num;
 		}
-		return nums;
+		return Arrays.asList(nums);
 	}
 	
 	public String buildAndFormat( String... numbersAsStrings ) {
 		assert numbersAsStrings.length>0: "Pass at least one value.";
-		Integer nums[]= parseArgs(numbersAsStrings);
+		List<Integer> nums= parseArgs(numbersAsStrings);
 		CartesianNode<Integer> root= build(nums);
 		return Ops.format( root );
 	}
