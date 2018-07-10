@@ -17,17 +17,26 @@
  */
 package tree.construct;
 
+import java.util.stream.Collectors;
+import java.util.Optional;
 import java.util.List;
 import java.util.ArrayList;
 import tree.Node;
 
 public class Ops {
-	static int maxLength( List<StringBuilder> lines ) {//@TODO Collectors
-		int max= 0;
-		for( StringBuilder line: lines ) {
-			max= Math.max( max, line.length() );
+	static int maxLength( List<StringBuilder> lines ) {
+		if( false ) {//before Lambda
+			int max= 0;
+			for( StringBuilder line: lines ) {
+				max= Math.max( max, line.length() );
+			}
+			return max;
 		}
-		return max;
+		else {
+			//Optional<String> max= lines.stream().map( sb->sb.toString() ).collect( Collectors.maxBy(String.CASE_INSENSITIVE_ORDER) );
+			Optional<Integer> max= lines.stream().map( line->line.length() ).collect( Collectors.maxBy(Integer::compare) );
+			return max.get();
+		}
 	}
 	
 	static String format( final Node<?> node ) {
