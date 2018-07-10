@@ -34,21 +34,26 @@ public class Ops {
 		}
 		else {
 			//Optional<String> max= lines.stream().map( sb->sb.toString() ).collect( Collectors.maxBy(String.CASE_INSENSITIVE_ORDER) );
-			Optional<Integer> max= lines.stream().map( line->line.length() ).collect( Collectors.maxBy(Integer::compare) );
+			Optional<Integer> max= lines.stream().map( /*line->line.length()*/StringBuilder::length ).collect( Collectors.maxBy(Integer::compare) );
 			return max.get();
 		}
 	}
 	
 	static String format( final Node<?> node ) {
 		List<StringBuilder> lines= formatLines( node );
-		StringBuilder result= new StringBuilder();
-		for( StringBuilder line: lines ) {//@TODO Use Collectors
-			if( result.length()>0 ) {
-				result.append( "\n" );
+		if( false ) {//before Lambda
+			StringBuilder result= new StringBuilder();
+			for( StringBuilder line: lines ) {
+				if( result.length()>0 ) {
+					result.append( "\n" );
+				}
+				result.append( line );
 			}
-			result.append( line );
+			return result.toString();
 		}
-		return result.toString();
+		else {
+			return lines.stream().collect( Collectors.joining("\n") );
+		}
 	}
 	
 	/** Not the most space-efficient, but simple.
