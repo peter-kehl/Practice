@@ -73,11 +73,9 @@ public class Engine {
 		return new Result<T>( node, -1, -1/*end*/ );		
 	}
 	
-	public static void main(String... args) {
-		assert args.length%2 ==0;
-		if( args.length==0 ) {
-			System.err.println( "Run with inOrder sequence first, followed by preOrder sequence. Each sequence must contain unique words. Hence pass an even number of words, each word repeated once: the first time in inOrder sequence, the second time in preOrder sequence." );
-			return;
+	public String buildAndFormat( String... args ) {
+		if( args.length==0 || args.length%2==1 ) {
+			throw new IllegalArgumentException( "Run with inOrder sequence first, followed by preOrder sequence. Each sequence must contain unique words. Hence pass an even number of words, each word repeated once: the first time in inOrder sequence, the second time in preOrder sequence." );
 		}
 		List<String> both= Arrays.asList(args);
 		List<String> inOrder= both.subList(0, both.size()/2 );
@@ -86,6 +84,10 @@ public class Engine {
 		assert new HashSet<String>( inOrder ).size() ==inOrder.size() : "Entries (within each sequence) must be unique.";
 		
 		Node<String> tree= build( inOrder, preOrder );
-		System.out.println( Ops.format( tree ) );
+		return Ops.format( tree );
+	}
+	
+	public static void main(String... args) {
+		System.out.println( new Engine().buildAndFormat(args) );
 	}
 }

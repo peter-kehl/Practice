@@ -26,13 +26,18 @@ public abstract class Engine {
 	protected abstract <T extends Comparable<T>> CartesianNode<T> build( List<T> values );
 	
 	protected static List<Integer> parseArgs( String... numbersAsStrings ) {
-		Integer nums[]= new Integer[numbersAsStrings.length];
-		int i=0;
-		for( String numberString: numbersAsStrings ) {
-			Integer num= Integer.parseInt(numberString);
-			nums[i++]= num;
+		if( false ) { // before Lambda
+			Integer nums[]= new Integer[numbersAsStrings.length];
+			int i=0;
+			for( String numberString: numbersAsStrings ) {
+				Integer num= Integer.parseInt(numberString);
+				nums[i++]= num;
+			}
+			return Arrays.asList(nums);
 		}
-		return Arrays.asList(nums);
+		else {
+			return Arrays.asList(numbersAsStrings).stream().map( s -> Integer.parseInt(s) ).collect( Collectors.toList() );
+		}
 	}
 	
 	public String buildAndFormat( String... numbersAsStrings ) {
