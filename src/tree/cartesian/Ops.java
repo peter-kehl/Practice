@@ -43,7 +43,7 @@ public class Ops {
 			result= consumer;
 		}
 		else {
-			var builder= new StringBuilder();
+			StringBuilder builder= new StringBuilder();
 			consumer= (s) -> {
 				if( builder.length()>0 ) {
 					builder.append("\n");
