@@ -33,7 +33,9 @@ public class Ops {
 			return max;
 		}
 		else {
-			//Optional<String> max= lines.stream().map( sb->sb.toString() ).collect( Collectors.maxBy(String.CASE_INSENSITIVE_ORDER) );
+			//Optional<String> maxStr= lines.stream().map( sb->sb.toString() ).collect( Collectors.maxBy(String.CASE_INSENSITIVE_ORDER) );
+			//Optional<String> maxStr= lines.stream().map( sb->sb.toString() ).collect( Collectors.maxBy(String::compareTo) );
+			//Optional<String> maxStr= lines.stream().map( sb->sb.toString() ).collect( Collectors.maxBy(String::compareToIgnoreCase) );
 			Optional<Integer> max= lines.stream().map( /*line->line.length()*/StringBuilder::length ).collect( Collectors.maxBy(Integer::compare) );
 			return max.get();
 		}
