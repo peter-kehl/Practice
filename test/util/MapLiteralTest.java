@@ -49,6 +49,16 @@ public class MapLiteralTest {
 				
 		{
 			HashMapLiteral<String, Character> map= new HashMapLiteral();
+			map.set(keys, values);
+			assertTrue( map.equals(checked) );
+		}
+		{
+			HashMapLiteral<String, Character> map= new HashMapLiteral();
+			map.set(keys, 'a', 'b', 'c');
+			assertTrue( map.equals(checked) );
+		}
+		{
+			HashMapLiteral<String, Character> map= new HashMapLiteral();
 			map.set(settableKeys, values);
 			assertTrue( map.equals(checked) );
 		}
