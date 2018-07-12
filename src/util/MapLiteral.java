@@ -119,12 +119,4 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 	/*default <RESULT extends MapLiteral<K,V>> RESULT set( Supplier<SettableKeys<? extends K>> keys, V... values ) {
 		return (RESULT)set( this, keys.get(), values );
 	}*/
-	
-	static <KK> SettableKeys<KK> keys(KK firstKey, KK... moreKeys) {
-		return new SettableKeys<KK>(firstKey, moreKeys);
-	}	
-	static <KK> SettableKeys<KK> keys(KK givenKeys[]) {
-		return new SettableKeys<KK>(givenKeys);
-	}	
-
 }

@@ -90,13 +90,13 @@ public class MapLiteralTest {
 		{
 			Map<String, Character> map= new HashMap();
 			//MapLiteral.set( map, ()->keys, values );
-			MapLiteral.set( map, MapLiteral.keys(keysArray), valuesArray );
+			MapLiteral.set( map, Varargs.of(keysArray), valuesArray );
 			assertTrue( map.equals(checked) );
 		}
 		{
 			Map<String, Character> map= new HashMap();
 			//MapLiteral.set( map, ()->keys, values );
-			MapLiteral.set( map, MapLiteral.keys(ACCEPT, BE, COMMUNICATE), valuesArray );
+			MapLiteral.set( map, Varargs.of(ACCEPT, BE, COMMUNICATE), valuesArray );
 			assertTrue( map.equals(checked) );
 		}
 		// We can't do lambda: ()->{firstArrayItem,secondArrayItem...}

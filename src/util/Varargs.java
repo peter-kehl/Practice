@@ -43,6 +43,13 @@ public class Varargs<T> implements Iterable<T> {
 		return items.length+ (usesExtra ? 1 : 0);
 	}
 	
+	static <KK> Varargs<KK> of(KK firstKey, KK... moreKeys) {
+		return new Varargs<KK>(firstKey, moreKeys);
+	}	
+	static <KK> Varargs<KK> of(KK givenKeys[]) {
+		return new Varargs<KK>(givenKeys);
+	}
+	
 	public Iterator<T> iterator() {
 		return new Iterator<T>() {
 			int index= usesExtra
