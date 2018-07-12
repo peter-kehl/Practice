@@ -25,6 +25,8 @@ public class HashMapLiteral<K, V> extends HashMap<K, V> implements MapLiteral<K,
 	public HashMapLiteral(int initialCapacity) { super(initialCapacity); }
 	public HashMapLiteral(int initialCapacity, float loadFactor) { super(initialCapacity, loadFactor); }
 	
+	// TODO V values[]
+	// V firstValue, V... moreValues
 	public HashMapLiteral( SettableKeys<K> keys, V... values) {
 		super( values.length );
 		set( keys, values );
