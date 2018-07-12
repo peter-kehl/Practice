@@ -39,7 +39,8 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 			super( givenKeys );
 			map= mapOrNew(givenMap);
 		}
-		SettableKeys(KK... givenKeys) { this( null, givenKeys); }
+		public SettableKeys(KK firstKey, KK... moreKeys) { this( null, firstKey, moreKeys); }
+		public SettableKeys(KK givenKeys[]) { this( (MapLiteral<KK, ?>)null, givenKeys); }
 		
 		public <VV, RESULT extends MapLiteral<KK,VV> > RESULT as(VV values[]) {
 			return MapLiteral.set( (RESULT)map, this, values );
@@ -94,7 +95,7 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, V firstValue, V... moreValues ) {
 		return set( (RESULT)this, keys, new Varargs<V>( firstValue, moreValues ) );
 	}
-	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, V... values ) {
+	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, V values[] ) {
 		return set( (RESULT)this, keys, new Varargs<V>( values ) );
 	}
 	

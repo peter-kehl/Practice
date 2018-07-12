@@ -19,7 +19,8 @@ package util;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.function.Supplier;
+//import java.util.function.Supplier;
+import static util.MapLiteral.SettableKeys;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -36,10 +37,11 @@ public class MapLiteralTest {
 	@Test
 	public void test() {
 		final String ACCEPT= "Accept", BE="Be", COMMUNICATE="Communicate";
-		MapLiteral.SettableKeys<String> keys= new MapLiteral.SettableKeys(ACCEPT, BE, COMMUNICATE);
+		final String keys[]= {ACCEPT, BE, COMMUNICATE};
+		MapLiteral.SettableKeys<String> settableKeys= new MapLiteral.SettableKeys(ACCEPT, BE, COMMUNICATE);
 		Character values[]= {'a', 'b', 'c'}; // Values are characters, rather than words, to save typing
 		Map<String, Character> checked= new HashMap<>();
-		MapLiteral.set( checked, keys, values);
+		MapLiteral.set( checked, settableKeys, values);
 		assertTrue( checked.entrySet().size()==values.length );
 		assertTrue( checked.get(ACCEPT).equals('a') );
 		assertTrue( checked.get(BE).equals('b') );
@@ -47,7 +49,12 @@ public class MapLiteralTest {
 				
 		{
 			HashMapLiteral<String, Character> map= new HashMapLiteral();
-			map.set(keys, values);
+			map.set(settableKeys, values);
+			assertTrue( map.equals(checked) );
+		}
+		{
+			HashMapLiteral<String, Character> map= new HashMapLiteral();
+			map.set(settableKeys, 'a', 'b', 'c');
 			assertTrue( map.equals(checked) );
 		}
 		// 1. key:value, {key, value}, ... with static typing
@@ -57,18 +64,25 @@ public class MapLiteralTest {
 		// 2. simplify: don't [repeat] type generic type params
 		// Even easier with: import static MapLiteral.keys;
 		{
-			Map<Character, String> map= new HashMap();
+			Map<String, Character> map= new HashMap();
 			//MapLiteral.set( map, ()->keys, values );
-			//assertTrue( map.equals(checked) );
-		}
-		// CAN WE DO ()->{firstArrayItem,secondArrayItem...}
-		
-		{
-			HashMapLiteral<Character, String> map= new HashMapLiteral( keys, values );
+			MapLiteral.set( map, settableKeys, values );
 			assertTrue( map.equals(checked) );
 		}
 		{
-			HashMapLiteral<Character, String> map= new HashMapLiteral( keys, 'a', 'b', 'c' );
+			Map<String, Character> map= new HashMap();
+			//MapLiteral.set( map, ()->keys, values );
+			MapLiteral.set( map, settableKeys, 'a', 'b', 'c' );
+			assertTrue( map.equals(checked) );
+		}
+		// We can't do lambda: ()->{firstArrayItem,secondArrayItem...}
+		
+		{
+			HashMapLiteral<Character, String> map= new HashMapLiteral( settableKeys, values );
+			assertTrue( map.equals(checked) );
+		}
+		{
+			HashMapLiteral<Character, String> map= new HashMapLiteral( settableKeys, 'a', 'b', 'c' );
 			assertTrue( map.equals(checked) );
 		}
 		{
