@@ -27,12 +27,17 @@ public class HashMapLiteral<K, V> extends HashMap<K, V> implements MapLiteral<K,
 	
 	// TODO V values[]
 	// V firstValue, V... moreValues
-	public HashMapLiteral( SettableKeys<K> keys, V... values) {
+	public HashMapLiteral( SettableKeys<K> keys, V firstValue, V... moreValues) {
+		super( keys.length() );
+		set( keys, firstValue, moreValues );
+	}
+	
+	public HashMapLiteral( SettableKeys<K> keys, V values[]) {
 		super( values.length );
 		set( keys, values );
 	}
 	
-	public HashMapLiteral( Supplier<SettableKeys<K>> keys, V... values) {
+	/*public HashMapLiteral( Supplier<SettableKeys<K>> keys, V... values) {
 		this( keys.get(), values );
-	}
+	}*/
 }

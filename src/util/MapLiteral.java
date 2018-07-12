@@ -18,9 +18,6 @@
 package util;
 
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.HashMap;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface MapLiteral<K, V> extends Map<K, V> {
@@ -45,7 +42,7 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		SettableKeys(KK... givenKeys) { this( null, givenKeys); }
 		
 		public <VV, RESULT extends MapLiteral<KK,VV> > RESULT as(VV values[]) {
-			return MapLiteral.setAs( (RESULT)map, this, values );
+			return MapLiteral.setOn( (RESULT)map, this, values );
 		}
 		
 		public <VV, RESULT extends MapLiteral<KK,VV> > RESULT to(VV... values) {
@@ -56,7 +53,7 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 			throw new Error("TODO");
 		}
 		
-		protected Map<?, ?> newMap() {
+		protected MapLiteral<?, ?> newMap() {
 			return new HashMapLiteral<Object, Object>();
 		}
 	}
@@ -69,30 +66,41 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		return new SettableKeys(this, firstKey, moreKeys);
 	}
 	
-	static <K, V, MAP extends Map<K,V>> MAP setAs( MAP map, SettableKeys<? extends K> keys, V values[] ) {
-		assert keys.length()==values.length;
-		int i=0;
+	static <K, V, MAP extends Map<K,V>> MAP setOn( MAP map, SettableKeys<? extends K> keys, Varargs<V> values ) {//@TODO ? extends V
+		assert keys.length()==values.length(); // Even though dualIterate() will also check, let's assert early
+		Varargs.dualIterate(keys, values, (k,v)->map.put(k, v) );
+		return map;
+	}
+	static <K, V, MAP extends Map<K,V>> MAP setOn( MAP map, SettableKeys<? extends K> keys, V values[] ) {
+		return setOn( map, keys, new Varargs<V>(values) );
+		/*int i=0;
 		for( K key: keys ) {//@TODO DualIterate
 			map.put( key, values[i++] );
 		}
-		return map;
+		return map;*/
 	}
 	
-	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, SettableKeys<? extends K> keys, V... values ) {
-		return setAs( map, keys, values );
+	static <K, V, MAP extends Map<K,V>> MAP setOn( MAP map, SettableKeys<? extends K> keys, V firstValue, V... moreValues ) {
+		return setOn( map, keys, new Varargs<V>(firstValue, moreValues) );
 	}
 	
-	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, Supplier<SettableKeys<? extends K>> keys, V... values ) {
+	/*static <K, V, MAP extends Map<K,V>> MAP set( MAP map, Supplier<SettableKeys<? extends K>> keys, V... values ) {
 		return set( map, keys.get(), values );
-	}
+	}*/
 	
+	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, Varargs<V> values ) {
+		return setOn( (RESULT)this, keys, values );
+	}
+	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, V firstValue, V... moreValues ) {
+		return setOn( (RESULT)this, keys, new Varargs<V>( firstValue, moreValues ) );
+	}
 	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, V... values ) {
-		return (RESULT)set( this, keys, values );
+		return setOn( (RESULT)this, keys, new Varargs<V>( values ) );
 	}
 	
-	default <RESULT extends MapLiteral<K,V>> RESULT set( Supplier<SettableKeys<? extends K>> keys, V... values ) {
+	/*default <RESULT extends MapLiteral<K,V>> RESULT set( Supplier<SettableKeys<? extends K>> keys, V... values ) {
 		return (RESULT)set( this, keys.get(), values );
-	}
+	}*/
 	
 	static <KK> SettableKeys<KK> keys(KK... givenKeys) {
 		return new SettableKeys<KK>(givenKeys);

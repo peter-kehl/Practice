@@ -35,18 +35,18 @@ public class MapLiteralTest {
 	
 	@Test
 	public void test() {
-		MapLiteral.SettableKeys<Character> keys= new MapLiteral.SettableKeys('a', 'b', 'c');
 		final String ACCEPT= "Accept", BE="Be", COMMUNICATE="Communicate";
-		String values[]= {ACCEPT, BE, COMMUNICATE};
-		Map<Character, String> checked= new HashMap<>();
+		MapLiteral.SettableKeys<String> keys= new MapLiteral.SettableKeys(ACCEPT, BE, COMMUNICATE);
+		Character values[]= {'a', 'b', 'c'}; // Values are characters, rather than words, to save typing
+		Map<String, Character> checked= new HashMap<>();
 		MapLiteral.set( checked, keys, values);
 		assertTrue( checked.entrySet().size()==values.length );
-		assertTrue( checked.get('a')==ACCEPT );
-		assertTrue( checked.get('b')==BE );
-		assertTrue( checked.get('c')==COMMUNICATE );
+		assertTrue( checked.get(ACCEPT).equals('a') );
+		assertTrue( checked.get(BE).equals('b') );
+		assertTrue( checked.get(COMMUNICATE).equals('c') );
 				
 		{
-			HashMapLiteral<Character, String> map= new HashMapLiteral();
+			HashMapLiteral<String, Character> map= new HashMapLiteral();
 			map.set(keys, values);
 			assertTrue( map.equals(checked) );
 		}
@@ -58,18 +58,22 @@ public class MapLiteralTest {
 		// Even easier with: import static MapLiteral.keys;
 		{
 			Map<Character, String> map= new HashMap();
-			MapLiteral.set( map, ()->keys, values );
-			assertTrue( map.equals(checked) );
+			//MapLiteral.set( map, ()->keys, values );
+			//assertTrue( map.equals(checked) );
 		}
-		// CAN WE DO ()->{...}
+		// CAN WE DO ()->{firstArrayItem,secondArrayItem...}
 		
 		{
 			HashMapLiteral<Character, String> map= new HashMapLiteral( keys, values );
 			assertTrue( map.equals(checked) );
 		}
 		{
-			HashMapLiteral<Character, String> map= new HashMapLiteral( ()->keys, values );
+			HashMapLiteral<Character, String> map= new HashMapLiteral( keys, 'a', 'b', 'c' );
 			assertTrue( map.equals(checked) );
+		}
+		{
+			/*HashMapLiteral<Character, String> map= new HashMapLiteral( ()->keys, values );*/
+			//assertTrue( map.equals(checked) );
 		}
 		//new HashMapLiteral().set(...).to(...);
 		
