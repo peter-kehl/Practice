@@ -37,29 +37,31 @@ public class MapLiteralTest {
 	@Test
 	public void test() {
 		final String ACCEPT= "Accept", BE="Be", COMMUNICATE="Communicate";
-		final String keys[]= {ACCEPT, BE, COMMUNICATE};
+		final String keysArray[]= {ACCEPT, BE, COMMUNICATE};
 		MapLiteral.SettableKeys<String> settableKeys= new MapLiteral.SettableKeys(ACCEPT, BE, COMMUNICATE);
-		Character values[]= {'a', 'b', 'c'}; // Values are characters, rather than words, to save typing
+		Character valuesArray[]= {'a', 'b', 'c'}; // Values are characters, rather than words, to save typing
+		
 		Map<String, Character> checked= new HashMap<>();
-		MapLiteral.set( checked, settableKeys, values);
-		assertTrue( checked.entrySet().size()==values.length );
+		MapLiteral.set( checked, settableKeys, valuesArray);
+		assertTrue( checked.entrySet().size()==valuesArray.length );
 		assertTrue( checked.get(ACCEPT).equals('a') );
 		assertTrue( checked.get(BE).equals('b') );
 		assertTrue( checked.get(COMMUNICATE).equals('c') );
 				
 		{
 			HashMapLiteral<String, Character> map= new HashMapLiteral();
-			map.set(keys, values);
+			map.set(keysArray, valuesArray);
 			assertTrue( map.equals(checked) );
 		}
 		{
 			HashMapLiteral<String, Character> map= new HashMapLiteral();
-			map.set(keys, 'a', 'b', 'c');
+			map.set(keysArray, 'a', 'b', 'c');
 			assertTrue( map.equals(checked) );
 		}
+		
 		{
 			HashMapLiteral<String, Character> map= new HashMapLiteral();
-			map.set(settableKeys, values);
+			map.set(settableKeys, valuesArray);
 			assertTrue( map.equals(checked) );
 		}
 		{
@@ -76,7 +78,7 @@ public class MapLiteralTest {
 		{
 			Map<String, Character> map= new HashMap();
 			//MapLiteral.set( map, ()->keys, values );
-			MapLiteral.set( map, settableKeys, values );
+			MapLiteral.set( map, settableKeys, valuesArray );
 			assertTrue( map.equals(checked) );
 		}
 		{
@@ -85,10 +87,22 @@ public class MapLiteralTest {
 			MapLiteral.set( map, settableKeys, 'a', 'b', 'c' );
 			assertTrue( map.equals(checked) );
 		}
+		{
+			Map<String, Character> map= new HashMap();
+			//MapLiteral.set( map, ()->keys, values );
+			MapLiteral.set( map, MapLiteral.keys(keysArray), valuesArray );
+			assertTrue( map.equals(checked) );
+		}
+		{
+			Map<String, Character> map= new HashMap();
+			//MapLiteral.set( map, ()->keys, values );
+			MapLiteral.set( map, MapLiteral.keys(ACCEPT, BE, COMMUNICATE), valuesArray );
+			assertTrue( map.equals(checked) );
+		}
 		// We can't do lambda: ()->{firstArrayItem,secondArrayItem...}
 		
 		{
-			HashMapLiteral<Character, String> map= new HashMapLiteral( settableKeys, values );
+			HashMapLiteral<Character, String> map= new HashMapLiteral( settableKeys, valuesArray );
 			assertTrue( map.equals(checked) );
 		}
 		{

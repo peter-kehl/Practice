@@ -84,12 +84,12 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		return (MAP)this;
 	}
 	
-	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, SettableKeys<? extends K> keys, Varargs<V> values ) {//@TODO ? extends V
+	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, Varargs<? extends K> keys, Varargs<V> values ) {//@TODO ? extends V
 		assert keys.length()==values.length(); // Even though dualIterate() will also check, let's assert early
 		Varargs.dualIterate(keys, values, (k,v)->map.put(k, v) );
 		return map;
 	}
-	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, SettableKeys<? extends K> keys, V values[] ) {
+	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, Varargs<? extends K> keys, V values[] ) {
 		return set( map, keys, new Varargs<V>(values) );
 		/*int i=0;
 		for( K key: keys ) {//@TODO DualIterate
@@ -98,7 +98,7 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		return map;*/
 	}
 	
-	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, SettableKeys<? extends K> keys, V firstValue, V... moreValues ) {
+	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, Varargs<? extends K> keys, V firstValue, V... moreValues ) {
 		return set( map, keys, new Varargs<V>(firstValue, moreValues) );
 	}
 	
@@ -106,13 +106,13 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		return set( map, keys.get(), values );
 	}*/
 	
-	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, Varargs<V> values ) {
+	default <RESULT extends MapLiteral<K,V>> RESULT set( Varargs<? extends K> keys, Varargs<V> values ) {
 		return set( (RESULT)this, keys, values );
 	}
-	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, V firstValue, V... moreValues ) {
+	default <RESULT extends MapLiteral<K,V>> RESULT set( Varargs<? extends K> keys, V firstValue, V... moreValues ) {
 		return set( (RESULT)this, keys, new Varargs<V>( firstValue, moreValues ) );
 	}
-	default <RESULT extends MapLiteral<K,V>> RESULT set( SettableKeys<? extends K> keys, V values[] ) {
+	default <RESULT extends MapLiteral<K,V>> RESULT set( Varargs<? extends K> keys, V values[] ) {
 		return set( (RESULT)this, keys, new Varargs<V>( values ) );
 	}
 	
@@ -120,7 +120,10 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		return (RESULT)set( this, keys.get(), values );
 	}*/
 	
-	static <KK> SettableKeys<KK> keys(KK... givenKeys) {
+	static <KK> SettableKeys<KK> keys(KK firstKey, KK... moreKeys) {
+		return new SettableKeys<KK>(firstKey, moreKeys);
+	}	
+	static <KK> SettableKeys<KK> keys(KK givenKeys[]) {
 		return new SettableKeys<KK>(givenKeys);
 	}	
 
