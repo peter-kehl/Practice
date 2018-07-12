@@ -24,15 +24,23 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface MapLiteral<K, V> extends Map<K, V> {
-	public class SettableKeys<KK> {
+	public class SettableKeys<KK> extends Varargs<KK> {
 		final MapLiteral<KK, ?> map;
-		final KK keys[];
 		
-		public SettableKeys(MapLiteral<KK, ?> givenMap, KK... givenKeys) {
-			map= givenMap!=null
+		protected MapLiteral<KK, ?> mapOrNew(MapLiteral<KK, ?> givenMap) {
+			return givenMap!=null
 				? givenMap
 				: (MapLiteral<KK, ?>)newMap();
-			keys=givenKeys;
+		}
+		
+		public SettableKeys(MapLiteral<KK, ?> givenMap, KK firstKey, KK... moreKeys) {
+			super( firstKey, moreKeys );
+			map= mapOrNew(givenMap);
+		}
+		
+		public SettableKeys(MapLiteral<KK, ?> givenMap, KK givenKeys[] ) {
+			super( givenKeys );
+			map= mapOrNew(givenMap);
 		}
 		SettableKeys(KK... givenKeys) { this( null, givenKeys); }
 		
@@ -55,14 +63,19 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		}
 	}
 	
-	default SettableKeys<K> set(K... givenKeys) {
+	default SettableKeys<K> set(K givenKeys[]) {
 		return new SettableKeys(this, givenKeys);
 	}
 	
+	default SettableKeys<K> set(K firstKey, K... moreKeys) {
+		return new SettableKeys(this, firstKey, moreKeys);
+	}
+	
 	static <K, V, MAP extends Map<K,V>> MAP setAs( MAP map, SettableKeys<? extends K> keys, V values[] ) {
-		assert keys.keys.length==values.length;
-		for( int i=0; i<keys.keys.length; i++ ) {
-			map.put( keys.keys[i], values[i] );
+		assert keys.length()==values.length;
+		int i=0;
+		for( K key: keys ) {
+			map.put( key, values[i++] );
 		}
 		return map;
 	}
