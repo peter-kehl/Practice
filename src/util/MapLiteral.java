@@ -45,9 +45,7 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		SettableKeys(KK... givenKeys) { this( null, givenKeys); }
 		
 		public <VV, RESULT extends MapLiteral<KK,VV> > RESULT as(VV values[]) {
-			//MapLiteral.setAs( map, this, values );
-			if(true) throw new Error("TODO");
-			return (RESULT)map;
+			return MapLiteral.setAs( (RESULT)map, this, values );
 		}
 		
 		public <VV, RESULT extends MapLiteral<KK,VV> > RESULT to(VV... values) {
@@ -74,7 +72,7 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 	static <K, V, MAP extends Map<K,V>> MAP setAs( MAP map, SettableKeys<? extends K> keys, V values[] ) {
 		assert keys.length()==values.length;
 		int i=0;
-		for( K key: keys ) {
+		for( K key: keys ) {//@TODO DualIterate
 			map.put( key, values[i++] );
 		}
 		return map;

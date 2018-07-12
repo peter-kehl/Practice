@@ -18,6 +18,7 @@
 package util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.BiConsumer;
 
 public class Varargs<T> implements Iterable<T> {
 	protected final boolean usesExtra;
@@ -61,5 +62,16 @@ public class Varargs<T> implements Iterable<T> {
 				return items[index++];
 			}
 		};
+	}
+	
+	public static <A, B> void dualIterate( Iterable<A> aSource, Iterable<B> bSource, BiConsumer<A,B> action ) {
+		final Iterator<B> bIterator= bSource.iterator();
+		for( A a: aSource ) {
+			B b= bIterator.next();
+			action.accept( a, b);
+		}
+		if( bIterator.hasNext() ) {
+			throw new NoSuchElementException("aSource had fewer items.");
+		}
 	}
 }
