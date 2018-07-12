@@ -67,6 +67,23 @@ public interface MapLiteral<K, V> extends Map<K, V> {
 		return new SettableKeys(this, firstKey, moreKeys);
 	}
 	
+	default <MAP extends Map<K,V>> MAP set(K keys[], V values[]) {
+		assert keys.length==values.length;
+		for( int i=0; i<keys.length; i++ ) {
+			put( keys[i], values[i] );
+		}
+		return (MAP)this;
+	}
+	
+	default <MAP extends Map<K,V>> MAP set(K keys[], V firstValue, V... moreValues) {
+		assert keys.length==moreValues.length+1;
+		put( keys[0], firstValue );
+		for( int i=0; i<moreValues.length; i++ ) {
+			put( keys[i+1], moreValues[i] );
+		}
+		return (MAP)this;
+	}
+	
 	static <K, V, MAP extends Map<K,V>> MAP set( MAP map, SettableKeys<? extends K> keys, Varargs<V> values ) {//@TODO ? extends V
 		assert keys.length()==values.length(); // Even though dualIterate() will also check, let's assert early
 		Varargs.dualIterate(keys, values, (k,v)->map.put(k, v) );
