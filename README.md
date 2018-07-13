@@ -1,2 +1,1 @@
-# Practice
-Data structures and algorithms in Java
+Data Structures, algorithms and examples in Java 8
